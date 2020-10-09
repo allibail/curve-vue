@@ -23,8 +23,9 @@
             <router-link :to="'/sbtc/' + ($route.path.split('/')[2] || '')">sBTC</router-link>
 <!--             <a href="https://iearn.finance/pool">sUSD</a> -->
             <p>____________</p>
+            <button class='simplebutton' @click = 'launchRamp' id='ramp'>Buy with Ramp</button>
             <button class='simplebutton' @click = 'changeWallets'>Change wallet</button>
-            <button id='changeAccounts' class='simplebutton' 
+            <button id='changeAccounts' class='simplebutton'
               @click = 'changeAccounts'>Change accounts</button>
         </div>
       </div>
@@ -89,8 +90,8 @@
       <a href="https://github.com/curvefi/curve-contract" class='showmobile'>git@</a>
       <a href="https://github.com/curvefi/curve-vue" class='showmobile'>git@UI</a>
       <button class='simplebutton showmobile' @click = 'changeWallets'>Change wallet</button>
-      <button id='changeAccounts' class='simplebutton showmobile' 
-        v-show="['ledger', 'trezor'].includes(walletName)" 
+      <button id='changeAccounts' class='simplebutton showmobile'
+        v-show="['ledger', 'trezor'].includes(walletName)"
         @click = 'changeAccounts'>Change accounts</button>
     </div>
     <div id="screen">
@@ -107,7 +108,7 @@
         </div>
         <div class='simple-error window' v-show='plsReturn'>
           Your recent withdrawal from Curve resulted in getting 1000 more USDT because of another user mistakenly transferring funds to the contract.
-          If you wish to return them - please contact us on <a href='https://twitter.com/CurveFinance'>Twitter</a>/<a href='https://t.me/curvefi'>Telegram</a>/<a href="https://discord.gg/9uEHakc" rel='noopener noreferrer'>@Discord</a>. Thank you! 
+          If you wish to return them - please contact us on <a href='https://twitter.com/CurveFinance'>Twitter</a>/<a href='https://t.me/curvefi'>Telegram</a>/<a href="https://discord.gg/9uEHakc" rel='noopener noreferrer'>@Discord</a>. Thank you!
         </div>
         <router-view/>
     </div>
@@ -127,7 +128,7 @@
 
 <script>
   import { getters, contract as currentContract, changeContract, poolMenu } from '../../contract'
-  import init, { onboard, changeWallets } from '../../init'
+  import init, { onboard, changeWallets, launchRamp } from '../../init'
 
   export default {
     metaInfo: {
@@ -148,7 +149,7 @@
       ]
     },
     components: {
-      
+
     },
     computed: {
       ...getters,
@@ -163,7 +164,7 @@
         else return this.publicPath + 'logo_ren_beta_optimized.svg'
       },
       hasConnectedWallet() {
-        return this.default_account == '0x0000000000000000000000000000000000000000' 
+        return this.default_account == '0x0000000000000000000000000000000000000000'
                 && !['Donate', 'StatsDaily', 'Audits', 'Stats', 'Contracts', 'FAQ', 'RootFAQ'].includes(this.$route.name)
       },
       plsReturn() {
@@ -176,6 +177,9 @@
       },
       async changeWallets() {
         changeWallets()
+      },
+      async launchRamp() {
+        launchRamp()
       },
       async changeAccounts() {
         return onboard.accountSelect();
