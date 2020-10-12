@@ -245,7 +245,7 @@ export async function changeWallets() {
   await onboard.walletCheck();
 }
 
-export async function launchRamp() {
+export function launchRamp() {
   new RampInstantSDK({
     hostAppName: 'Curve',
     hostLogoUrl: 'https://www.curve.fi/logo_optimized.svg',
