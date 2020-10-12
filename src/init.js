@@ -14,6 +14,7 @@ import * as common from './utils/common.js'
 import * as state from './contract.js'
 import { infura_url } from './allabis.js'
 import { multicall_address, multicall_abi } from './allabis'
+import { RampInstantSDK } from '@ramp-network/ramp-instant-sdk'
 
 /*const providerOptions = {
     walletconnect: {
@@ -88,7 +89,7 @@ let wallets = [
   { walletName: "status" },
   { walletName: "fortmatic", apiKey: "pk_live_190B10CE18F47DCD" },
   { walletName: "authereum", apiKey: "_BTsipRcEmPeuVteLOGdoh1CXt733YLZ7u3ipbe_dAk" },
-  { 
+  {
     walletName: "trust",
     rpcUrl: "https://mainnet.infura.io/v3/c334bb4b45a444979057f0fb8a0c9d1b",
   },
@@ -96,7 +97,7 @@ let wallets = [
     walletName: "walletConnect",
     infuraKey: "c334bb4b45a444979057f0fb8a0c9d1b"
   },
-  { 
+  {
     walletName: "walletLink",
     appName: 'Curve Finance',
     appLogoUrl: 'https://www.curve.fi/logo.png',
@@ -215,8 +216,8 @@ async function init(init = true, name, walletlink = false) {
   window.web3provider = web3;*/
   try {
     state.contract.initializedContracts = false;
-    let userSelectedWallet = await onboard.walletSelect(localStorage.getItem('selectedWallet') 
-      || window.web3 && window.web3.currentProvider.isTrust && 'Trust' 
+    let userSelectedWallet = await onboard.walletSelect(localStorage.getItem('selectedWallet')
+      || window.web3 && window.web3.currentProvider.isTrust && 'Trust'
       || window.web3 && window.web3.currentProvider.isCoinbaseWallet && 'Coinbase');
     if(userSelectedWallet) await onboard.walletCheck();
     else window.web3 = new Web3(infura_url)
@@ -242,6 +243,15 @@ export async function changeWallets() {
   state.contract.totalShare = 0
   let userSelectedWallet = await onboard.walletSelect();
   await onboard.walletCheck();
+}
+
+export async function launchRamp() {
+  new RampInstantSDK({
+    hostAppName: 'Curve',
+    hostLogoUrl: 'https://www.curve.fi/logo_optimized.svg',
+  })
+    .on('*', (event) => console.log(event))
+    .show();
 }
 
 export default init;
